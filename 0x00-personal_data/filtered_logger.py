@@ -6,6 +6,29 @@ using logging module to log data
 import re
 from typing import List
 import logging
+import logging
+import csv
+
+PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
+
+
+def get_logger() -> logging.Logger:
+    """
+    Returns a logging.Logger object named "user_data"
+    with specified configuration.
+    """
+    logger = logging.getLogger("user_data")
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+
+    formatter = RedactingFormatter(PII_FIELDS)
+
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+
+    logger.addHandler(stream_handler)
+
+    return logger
 
 
 def filter_datum(fields: List[str], redaction: str,
