@@ -3,9 +3,10 @@
 encypting passwords
 """
 import bcrypt
+from typing import bytes
 
 
-def hash_password(password):
+def hash_password(password: str) -> bytes:
     """
     a function that hashes a password
     """
