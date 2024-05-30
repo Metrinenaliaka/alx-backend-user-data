@@ -8,6 +8,8 @@ from typing import List
 import logging
 import logging
 import csv
+import os
+import mysql.connector
 
 PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
@@ -40,6 +42,25 @@ def filter_datum(fields: List[str], redaction: str,
         message = re.sub(rf'{field}=.+?{separator}',
                          f'{field}={redaction}{separator}', message)
     return message
+
+
+def get_db() -> mysql.connector.connection.MySQLConnection:
+    """
+    Returns a connector to the database.
+    """
+    username = os.getenv("PERSONAL_DATA_DB_USERNAME", "root")
+    password = os.getenv("PERSONAL_DATA_DB_PASSWORD", "")
+    host = os.getenv("PERSONAL_DATA_DB_HOST", "localhost")
+    database = os.getenv("PERSONAL_DATA_DB_NAME")
+
+    connector = mysql.connector.connect(
+        user=username,
+        password=password,
+        host=host,
+        database=database
+    )
+
+    return connector
 
 
 class RedactingFormatter(logging.Formatter):
