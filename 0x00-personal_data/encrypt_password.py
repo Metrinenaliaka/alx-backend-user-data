@@ -3,7 +3,7 @@
 encypting passwords
 """
 import bcrypt
-from typing import bytes
+# from typing import bytes
 
 
 def hash_password(password: str) -> bytes:
