@@ -82,3 +82,24 @@ class RedactingFormatter(logging.Formatter):
         record.msg = filter_datum(self.fields, self.REDACTION,
                                   record.msg, self.SEPARATOR)
         return super().format(record)
+
+
+def main() -> None:
+    """
+    Main function
+    """
+    logger = get_logger()
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()
+    for row in rows:
+        filtered_row = filter_datum(PII_FIELDS, RedactingFormatter.REDACTION,
+                                    str(row), RedactingFormatter.SEPARATOR)
+        logger.info(filtered_row)
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
