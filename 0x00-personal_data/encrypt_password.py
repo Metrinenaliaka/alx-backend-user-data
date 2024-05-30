@@ -6,6 +6,17 @@ import bcrypt
 # from typing import bytes
 
 
+def is_valid(hashed_password: bytes, password: str) -> bool:
+    """
+    a function that checks if a password is valid
+    """
+    # Check if the provided password matches the hashed password
+    if bcrypt.checkpw(password.encode(), hashed_password):
+        return True
+    else:
+        return False
+
+
 def hash_password(password: str) -> bytes:
     """
     a function that hashes a password
