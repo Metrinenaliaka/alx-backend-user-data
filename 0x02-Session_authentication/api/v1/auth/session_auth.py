@@ -7,6 +7,7 @@ from api.v1.auth.auth import Auth
 
 os.environ['AUTH_TYPE'] = 'SessionAuth'
 
+
 class SessionAuth(Auth):
     """
     class for session authentication
