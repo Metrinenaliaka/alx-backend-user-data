@@ -2,7 +2,7 @@
 """
 handling authentication for the API
 """
-
+import os
 from typing import TypeVar
 import fnmatch
 from flask import request, jsonify, abort
@@ -43,3 +43,12 @@ class Auth:
         current user
         """
         return None
+
+    def session_cookie(self, request=None) -> str:
+        """
+        session cookie
+        """
+        if request is None:
+            return None
+        _my_session_id = os.getenv('SESSION_NAME')
+        return request.cookies.get(_my_session_id)
