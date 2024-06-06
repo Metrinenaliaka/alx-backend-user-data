@@ -4,9 +4,9 @@ handling authentication for the API
 """
 
 from typing import TypeVar
+import fnmatch
 from flask import request, jsonify, abort
 from typing import List, TypeVar
-import fnmatch
 
 
 class Auth:
