@@ -42,6 +42,7 @@ class Auth:
         """
         current user
         """
+
         return None
 
     def session_cookie(self, request=None) -> str:
