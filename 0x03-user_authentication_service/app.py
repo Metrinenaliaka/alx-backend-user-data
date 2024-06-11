@@ -2,7 +2,7 @@
 """
 my flask app
 """
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect
 from flask.wrappers import Response
 from sqlalchemy.orm.exc import NoResultFound
 from auth import Auth
@@ -54,6 +54,23 @@ def login() -> Response:
     response = jsonify({"email": email, "message": "logged in"})
     response.set_cookie("session_id", session_id)
     return response
+
+
+@app.route('/sessions', methods=['DELETE'])
+def logout() -> Response:
+    """
+    logs out users
+    """
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        abort(403)
+    user = AUTH.get_user_from_session_id(session_id)
+
+    if user:
+        AUTH.destroy_session(user.id)
+        return redirect('/')
+    else:
+        return jsonify({"message": "Forbidden"}), 403
 
 
 if __name__ == "__main__":
