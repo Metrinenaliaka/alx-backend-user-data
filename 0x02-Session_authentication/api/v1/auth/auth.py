@@ -7,12 +7,19 @@ from typing import TypeVar
 import fnmatch
 from flask import request, jsonify, abort
 from typing import List, TypeVar
+# from api.v1.auth.session_auth import SessionAuth
 
 
 class Auth:
     """
     class handling auth
     """
+    def authenticate(self) -> None:
+        """
+        authenticate
+        """
+        print("Authenticating using base Auth class")
+
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
         """
         required paths"""
