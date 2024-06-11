@@ -88,5 +88,20 @@ def profile() -> Response:
         return jsonify({"message": "Forbidden"}), 403
 
 
+@app.route('/reset_password', methods=['POST'])
+def reset_password() -> Response:
+    """
+    generates reset password token
+    """
+    email = request.form.get("email")
+    if not email:
+        return jsonify({"message": "Email is required"}), 400
+    try:
+        reset_token = AUTH.get_reset_password_token(email)
+        return jsonify({"email": email, "reset_token": reset_token}), 200
+    except NoResultFound:
+        return jsonify({"message": "Forbidden"}), 403
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
