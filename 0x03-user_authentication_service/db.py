@@ -55,10 +55,11 @@ class DB:
     def update_user(self, user_id: int, **kwargs) -> None:
         """Update a user by a given attribute
         """
-        try:
-            user = self._session.query(User).filter_by(id=user_id).one()
-            for key, value in kwargs.items():
+
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            if hasattr(user, key):
                 setattr(user, key, value)
-            self._session.commit()
-        except ValueError:
-            pass
+            else:
+                raise ValueError(f"Attribute '{key}' does not exist on User")
+        self._session.commit()
