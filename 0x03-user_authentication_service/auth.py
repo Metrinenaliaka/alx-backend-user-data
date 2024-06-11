@@ -26,6 +26,18 @@ def _generate_uuid() -> str:
     return str(uuid.uuid4())
 
 
+def get_user_from_session_id(session_id: str) -> User:
+    """
+    gets a user from a session id
+    """
+    db = DB()
+    try:
+        user = db.find_user_by(session_id=session_id)
+        return user
+    except NoResultFound:
+        return None
+
+
 class Auth:
     """Auth class to interact with the authentication database.
     """
