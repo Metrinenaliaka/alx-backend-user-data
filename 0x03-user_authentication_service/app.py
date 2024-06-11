@@ -38,7 +38,7 @@ def users() -> Response:
 
 
 @app.route('/sessions', methods=['POST'])
-def sessions() -> Response:
+def login() -> Response:
     """
     logs in users
     """
