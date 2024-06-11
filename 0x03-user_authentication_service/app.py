@@ -24,22 +24,17 @@ def users() -> Response:
     """
     registers users
     """
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if not email or not password:
+        return jsonify({"message": "email and password required"}), 400
+
     try:
-        email = request.form.get("email")
-        password = request.form.get("password")
-
-        if not email or not password:
-            return jsonify({"message": "Email and password are required"}), 400
-        try:
-            old_user = AUTH._db.find_user_by(email=email)
-            if old_user:
-                return jsonify({"message": "email already registered"}), 400
-        except NoResultFound:
-            AUTH.register_user(email, password)
-            return jsonify({"email": email, "message": "user created"}), 201
-
-    except ValueError as e:
-        return jsonify({"message": str(e)}), 400
+        user = AUTH.register_user(email, password)
+        return jsonify({"email": user.email, "message": "user created"})
+    except ValueError:
+        return jsonify({"message": "email already registered"}), 400
 
 
 @app.route('/sessions', methods=['POST'])
